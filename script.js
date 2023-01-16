@@ -11,8 +11,10 @@ const difficultySelect = document.getElementById('difficulty');
 let currentDifficulty = '';
 let currentRandomWord;
 
-let timeInterval = 10;
+let time = 10;
 let score = 0;
+
+text.focus();
 
 const words = [
   'sigh',
@@ -37,6 +39,28 @@ const words = [
   'loving'
 ];
 
+const timeInterval = setInterval(updateTime, 1000);
+
+function updateTime() {
+  time--;
+  timeEl.innerHTML = time + 's';
+
+  if (time === 0) {
+    clearInterval(timeInterval);
+    gameOver();
+  }
+}
+
+function gameOver() {
+  endgameEl.innerHTML = `
+    <h1>Time ran out</h1>
+    <p>Your final score is ${score}</p>
+    <button onclick="location.reload()">Reload</button>
+  `;
+
+  endgameEl.style.display = 'flex';
+}
+
 function getRandomWord() {
   const randomWord = words[Math.floor(Math.random() * words.length)];
   word.innerText = randomWord;
@@ -56,6 +80,8 @@ text.addEventListener('input', (e) => {
     e.target.value = '';
     getRandomWord();
     updateScore();
+    time+=5;
+    updateTime();
   }
 })
 
