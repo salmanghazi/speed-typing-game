@@ -8,7 +8,7 @@ const settings = document.getElementById('settings');
 const settingsForm = document.getElementById('settings-form');
 const difficultySelect = document.getElementById('difficulty');
 
-let currentDifficulty = '';
+let currentDifficulty = difficultySelect.value;
 let currentRandomWord;
 
 let time = 10;
@@ -72,6 +72,16 @@ function updateScore() {
   scoreEl.innerText = score;
 }
 
+function incrementTime() {
+  if (currentDifficulty === 'hard') {
+    time += 2;
+  } else if (currentDifficulty === 'medium') {
+    time += 3;
+  } else {
+    time += 5;
+  }
+}
+
 getRandomWord();
 
 text.addEventListener('input', (e) => {
@@ -80,11 +90,13 @@ text.addEventListener('input', (e) => {
     e.target.value = '';
     getRandomWord();
     updateScore();
-    time+=5;
     updateTime();
+    incrementTime();
   }
-})
+});
+
+settingsBtn.addEventListener('click', () => settings.classList.toggle('hide'));
 
 settingsForm.addEventListener('change', () => {
-  console.log(difficultySelect.value)
+  currentDifficulty = difficultySelect.value;
 });
